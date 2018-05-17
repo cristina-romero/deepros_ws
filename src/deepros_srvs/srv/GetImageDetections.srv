@@ -1,0 +1,5 @@
+# Get detections for a single image
+
+sensor_msgs/Image image               # Input image
+---
+deepros_msgs/Detection[] detections   # Detections (label + confidence + bounding box)

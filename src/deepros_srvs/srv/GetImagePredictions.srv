@@ -1,0 +1,7 @@
+# Get predictions for a single image
+
+sensor_msgs/Image image                 # Input image
+uint16 n                                # Number of predictions
+bool sort                               # Sort predictions by confidence
+---
+deepros_msgs/Prediction[] predictions   # n predictions (label, confidence)
