@@ -20,7 +20,7 @@ This package is based on the use of pretrained models. Thus, you must have insta
 
 The package provides classifier and detector node for each framework (if there are pretrained models for the task). Each of this nodes can work with a stream of images and/or with a single image.
 
-### classifier\_<framework>
+### classifier\_&lt;framework&gt;
 
 This node publishes the top `n` predictions for the input image received in the `input` topic. It also advertises a service `/deepros/srv/predictions` to obtain predictions for a single image.
 
@@ -30,7 +30,7 @@ For example, to obtain the top 5 predictions using the Caffe `bvlc_alexnet` mode
 
 _Arguments_
 
-    rosrun deepros classifier_<framework> <model_id> <n_predictions> [<args>]
+    rosrun deepros classifier\_&lt;framework&gt; <model_id> <n_predictions> [<args>]
 
 - `<model_id>`: Pretrained model to use for classification.
 - `<n_pedictions>`: Number of predictions.
@@ -65,7 +65,7 @@ _Arguments_
 - `<args>` [Optional]: ROS additional arguments.
 
 
-### detector\_<framework>
+### detector\_&lt;framework&gt;
 
 This node publishes the detected objects for the input image received in the `input` topic. It also advertises a service `/deepros/srv/detections` to obtain predictions for a single image.
 
@@ -96,7 +96,7 @@ _Services_
 
 Example of client for the service `/deepros/srv/detect`. It can be used to obtain object detections for a single image, which will be printed to the standard output.
 
-For example, while the detector\_<framework> node is running, you obtain the detections for an image with:
+For example, while the detector\_&lt;framework&gt; node is running, you obtain the detections for an image with:
 
     rosrun deepros detection_client <image>
 
