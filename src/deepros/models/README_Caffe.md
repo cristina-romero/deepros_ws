@@ -52,6 +52,7 @@ And uncomment the following lines:
 
     set(Caffe_INCLUDE_DIRS ${Caffe_DIR}/build/include ${Caffe_DIR}/distribute/include)
     set(Caffe_LIBRARIES ${Caffe_DIR}/build/lib/libcaffe.so)
+    set(Caffe_FOUND 1)
 
 ## Download models
 
