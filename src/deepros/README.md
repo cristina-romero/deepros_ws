@@ -30,7 +30,7 @@ For example, to obtain the top 5 predictions using the Caffe `bvlc_alexnet` mode
 
 _Arguments_
 
-    rosrun deepros classifier\_&lt;framework&gt; <model_id> <n_predictions> [<args>]
+    rosrun deepros classifier_<framework> <model_id> <n_predictions> [<args>]
 
 - `<model_id>`: Pretrained model to use for classification.
 - `<n_pedictions>`: Number of predictions.
@@ -52,7 +52,7 @@ _Services_
 
 Example of client for the service `/deepros/srv/predict`. It can be used to obtain predictions for a single image, which will be printed to the standard output.
 
-For example, while the classifier\_<framework> node is running, you can obtain the top 5 predictions for an image with:
+For example, while the classifier\_&lt;framework&gt; node is running, you can obtain the top 5 predictions for an image with:
 
     rosrun deepros classification_client <image> 5 
 
