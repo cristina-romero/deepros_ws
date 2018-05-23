@@ -1,0 +1,4 @@
+name: extraction
+weights_url: https://pjreddie.com/media/files/extraction.weights
+cfg_url: https://raw.githubusercontent.com/pjreddie/darknet/master/cfg/extraction.cfg
+labels_url: https://raw.githubusercontent.com/pjreddie/darknet/master/data/imagenet.shortnames.list
