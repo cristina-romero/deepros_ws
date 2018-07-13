@@ -12,11 +12,11 @@ int main(int argc, char** argv)
 {
   // ROS init
   ros::init(argc, argv, "detection_client");
-  ros::NodeHandle nh;
+  ros::NodeHandle nh("~");
   
   // Check arguments
   if (argc < 2) {
-    std::cerr << "Usage: " << argv[0] << " <image> [<args>]" << std::endl;
+    std::cerr << "Usage: " << argv[0] << " <image> [_output:=<output_file>] [<args>]" << std::endl;
     return 1;
   }
   
@@ -28,6 +28,12 @@ int main(int argc, char** argv)
     ROS_ERROR("Unable to decode image %s", image_file.c_str ());
     return 1;
   }
+  
+  // Check for output file
+  std::string out_file;
+  bool save_output = nh.getParam ("output", out_file);
+  if (save_output)
+    nh.deleteParam ("output"); // Clean param for next usage
   
   // Client
   ros::ServiceClient client = nh.serviceClient<deepros_srvs::GetImageDetections> ("/deepros/srv/detect");
@@ -48,6 +54,16 @@ int main(int argc, char** argv)
     {
       ROS_INFO ("%d: %f - %s (%d, %d - %d, %d)", i, srv.response.detections[i].confidence, srv.response.detections[i].label.c_str (),
         srv.response.detections[i].min_x, srv.response.detections[i].min_y, srv.response.detections[i].max_x, srv.response.detections[i].max_y);
+      
+      cv::Point min_pt (srv.response.detections[i].min_x, srv.response.detections[i].min_y);
+      cv::Point max_pt (srv.response.detections[i].max_x, srv.response.detections[i].max_y);
+      cv::rectangle (img, min_pt, max_pt, cv::Scalar(0, 255, 0), 3);
+    }
+    
+    if (save_output)
+    {
+      cv::imwrite (out_file, img);
+      ROS_INFO ("Detections image saved in: %s", out_file.c_str ());
     }
   }
   else
