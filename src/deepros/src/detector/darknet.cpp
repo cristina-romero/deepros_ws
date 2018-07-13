@@ -100,7 +100,7 @@ deepros::detector::Darknet::fromOpenCVtoDarknet (cv::Mat img)
 std::vector<deepros::detector::Detection> 
 deepros::detector::Darknet::detect (const cv::Mat &img)
 {
-  // Code adapted from test_yolo in yolo.c file
+  // Code adapted from test_detector in examples/detector.c file
 
   std::vector<deepros::detector::Detection> detections;
   
@@ -111,12 +111,13 @@ deepros::detector::Darknet::detect (const cv::Mat &img)
   // Some params
   float nms = 0.45f;
   int n_classes = labels_.size ();
+  float hier_thresh = 0.5f;
   
   // Detection
   network_predict (net_.get (), sized.data);
 
   int n_boxes = 0;
-  detection *dets = get_network_boxes(net_.get (), 1, 1, threshold_, 0, 0, 0, &n_boxes);
+  detection *dets = get_network_boxes(net_.get (), im.w, im.h, threshold_, hier_thresh, 0, 1, &n_boxes);
   if (nms)
     do_nms_sort(dets, n_boxes, n_classes, nms);
   
@@ -128,11 +129,10 @@ deepros::detector::Darknet::detect (const cv::Mat &img)
     float prob = dets[i].prob[class_id];
     if (prob > threshold_)
     {
-      // From draw_bbox in image.c
-      int left = std::max (0.0f, (dets[i].bbox.x - dets[i].bbox.w / 2) * im.w);
-      int right = std::min ((float) im.w, (dets[i].bbox.x + dets[i].bbox.w / 2) * im.w);
-      int top = std::max (0.0f, (dets[i].bbox.y - dets[i].bbox.h / 2) * im.h);
-      int bottom = std::min ((float) im.h, (dets[i].bbox.y + dets[i].bbox.h / 2) * im.h);
+      int left = std::max (0.0f, (dets[i].bbox.x - dets[i].bbox.w / 2.0f) * im.w);
+      int right = std::min ((float) im.w - 1, (dets[i].bbox.x + dets[i].bbox.w / 2.0f) * im.w);
+      int top = std::max (0.0f, (dets[i].bbox.y - dets[i].bbox.h / 2.0f) * im.h);
+      int bottom = std::min ((float) im.h - 1, (dets[i].bbox.y + dets[i].bbox.h / 2.0f) * im.h);
       
       deepros::detector::Detection d (labels_[class_id], prob, left, top, right, bottom);
       detections.push_back (d);
